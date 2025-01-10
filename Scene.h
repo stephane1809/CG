@@ -24,7 +24,7 @@ public:
 
 	/**
 	 * @brief Adiciona um objeto à cena.
-	 */
+	 *
 	 * 
 	 * @param object Ponteiro para o objeto a ser adicionado.
 	 */

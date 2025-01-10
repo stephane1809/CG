@@ -47,6 +47,6 @@ public:
 	 * @param transformationMatrix A matriz de transformação da câmera.
 	 */
 	void convertToCamera(Eigen::Matrix4d transformationMatrix);
-};
+
 
 #endif

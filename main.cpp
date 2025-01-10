@@ -1,6 +1,6 @@
 #include <iostream>
 #include "../eigen-3.4.0/Eigen/Dense"  // Lib para �lgebra linear
-#include "../SDL/SDL2.dll"  // Lib gr�fica
+#include <SDL.h> // Lib gr�fica
 #include <SDL_image.h>  // Lib texturas
 #include <ctime>
 

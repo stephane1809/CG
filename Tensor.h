@@ -29,6 +29,6 @@ public:
 	 */
 	void normalize();
 };
-class Tensor
+
 
 #endif
