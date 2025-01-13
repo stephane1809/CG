@@ -1,7 +1,7 @@
 #include <iostream>
-#include "../eigen-3.4.0/Eigen/Dense"  // Lib para �lgebra linear
-#include "../SDL/SDL2.dll"  // Lib gr�fica
-#include <SDL_image.h>  // Lib texturas
+#include "../eigen-3.4.0/Eigen/Dense" // Lib para �lgebra linear
+#include <SDL.h>					  // Lib gr�fica
+#include <SDL_image.h>				  // Lib texturas
 #include <ctime>
 
 // Estrutura de dados
@@ -20,7 +20,7 @@
 #include "Tensor.h"
 #include "TriangularFace.h"
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
 	// Checando a inicializa��o do SDL
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
@@ -40,15 +40,13 @@ int main(int argc, char* argv[])
 	double numLines = 500;
 
 	// Cria��o da janela
-	SDL_Window* window = SDL_CreateWindow
-	(
+	SDL_Window *window = SDL_CreateWindow(
 		"Cena",
 		SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED,
-		(int) numColumns,
-		(int) numLines,
-		SDL_WINDOW_SHOWN
-	);
+		(int)numColumns,
+		(int)numLines,
+		SDL_WINDOW_SHOWN);
 
 	if (!window)
 	{
@@ -58,7 +56,7 @@ int main(int argc, char* argv[])
 	}
 
 	// Cria��o do objeto renderer
-	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	if (!renderer)
 	{
 		SDL_Log("N�o foi poss�vel criar o renderer");
@@ -70,81 +68,68 @@ int main(int argc, char* argv[])
 	// Canvas e cena
 	Canvas canvas(windowDistance, windowWidth, windowHeight, numLines, numColumns);
 	Scene scene;
-	Camera* camera = new Camera
-	(
+	Camera *camera = new Camera(
 		Eigen::Vector3d(0, -20, -350),
 		Eigen::Vector3d(0, -20, 0),
-		Eigen::Vector3d(0, 1, 0)
-	);
+		Eigen::Vector3d(0, 1, 0));
 	scene.setCamera(camera);
 
 	// Texturas
 
-	SDL_Surface* springTexture = IMG_Load("spring.png");
-	SDL_Surface* summerTexture = IMG_Load("summer.png");
-	SDL_Surface* autumnTexture = IMG_Load("fall.png");
-	SDL_Surface* winterTexture = IMG_Load("winter.png");
+	SDL_Surface *springTexture = IMG_Load("spring.png");
+	SDL_Surface *summerTexture = IMG_Load("summer.png");
+	SDL_Surface *autumnTexture = IMG_Load("fall.png");
+	SDL_Surface *winterTexture = IMG_Load("winter.png");
 
 	/* Background */
-	Object* sky = new Plane
-	(
+	Object *sky = new Plane(
 		NULL,
 		Eigen::Vector3d(0, 0, 1),
 		Eigen::Vector3d(0, 0, -1000),
 		Eigen::Vector3d(32, 116, 219),
 		Eigen::Vector3d(32, 116, 219),
 		Eigen::Vector3d(0, 0, 0),
-		0
-	);
+		0);
 
-	Object* skyLeft = new Plane
-	(
+	Object *skyLeft = new Plane(
 		NULL,
 		Eigen::Vector3d(1, 0, 0),
 		Eigen::Vector3d(-1000, 0, 0),
 		Eigen::Vector3d(32, 116, 219),
 		Eigen::Vector3d(32, 116, 219),
 		Eigen::Vector3d(0, 0, 0),
-		0
-	);
+		0);
 
-	Object* skyRight = new Plane
-	(
+	Object *skyRight = new Plane(
 		NULL,
 		Eigen::Vector3d(-1, 0, 0),
 		Eigen::Vector3d(1000, 0, 0),
 		Eigen::Vector3d(32, 116, 219),
 		Eigen::Vector3d(32, 116, 219),
 		Eigen::Vector3d(0, 0, 0),
-		0
-	);
+		0);
 
-	Object* skyTop = new Plane
-	(
+	Object *skyTop = new Plane(
 		NULL,
 		Eigen::Vector3d(0, -1, 0),
 		Eigen::Vector3d(0, 1000, 0),
 		Eigen::Vector3d(32, 116, 219),
 		Eigen::Vector3d(32, 116, 219),
 		Eigen::Vector3d(0, 0, 0),
-		0
-	);
+		0);
 
-	Object* grass = new Plane
-	(
+	Object *grass = new Plane(
 		summerTexture,
 		Eigen::Vector3d(0, 1, 0),
 		Eigen::Vector3d(0, -100, 0),
 		Eigen::Vector3d(0, 0, 0),
 		Eigen::Vector3d(100, 100, 100),
 		Eigen::Vector3d(0, 0, 0),
-		0
-	);
+		0);
 
 	/* Pinheiros */
 
-	Object* pineLog1 = new Cilinder
-	(
+	Object *pineLog1 = new Cilinder(
 		10,
 		60,
 		Eigen::Vector3d(-130, -100, -230),
@@ -152,11 +137,9 @@ int main(int argc, char* argv[])
 		Eigen::Vector3d(50, 31, 20),
 		Eigen::Vector3d(50, 31, 20),
 		Eigen::Vector3d(0, 0, 0),
-		0
-	);
+		0);
 
-	Object* pineLeaves1 = new Cone
-	(
+	Object *pineLeaves1 = new Cone(
 		30,
 		50,
 		Eigen::Vector3d(-130, -40, -230),
@@ -164,11 +147,9 @@ int main(int argc, char* argv[])
 		Eigen::Vector3d(10, 156, 53),
 		Eigen::Vector3d(10, 156, 53),
 		Eigen::Vector3d(0, 0, 0),
-		0
-	);
+		0);
 
-	Object* pineLog2 = new Cilinder
-	(
+	Object *pineLog2 = new Cilinder(
 		10,
 		60,
 		Eigen::Vector3d(-130, -100, -300),
@@ -176,11 +157,9 @@ int main(int argc, char* argv[])
 		Eigen::Vector3d(50, 31, 20),
 		Eigen::Vector3d(50, 31, 20),
 		Eigen::Vector3d(0, 0, 0),
-		0
-	);
+		0);
 
-	Object* pineLeaves2 = new Cone
-	(
+	Object *pineLeaves2 = new Cone(
 		30,
 		50,
 		Eigen::Vector3d(-130, -40, -300),
@@ -188,11 +167,9 @@ int main(int argc, char* argv[])
 		Eigen::Vector3d(10, 156, 53),
 		Eigen::Vector3d(10, 156, 53),
 		Eigen::Vector3d(0, 0, 0),
-		0
-	);
+		0);
 
-	Object* pineLog3 = new Cilinder
-	(
+	Object *pineLog3 = new Cilinder(
 		10,
 		60,
 		Eigen::Vector3d(-130, -100, -160),
@@ -200,11 +177,9 @@ int main(int argc, char* argv[])
 		Eigen::Vector3d(50, 31, 20),
 		Eigen::Vector3d(50, 31, 20),
 		Eigen::Vector3d(0, 0, 0),
-		0
-	);
+		0);
 
-	Object* pineLeaves3 = new Cone
-	(
+	Object *pineLeaves3 = new Cone(
 		30,
 		50,
 		Eigen::Vector3d(-130, -40, -160),
@@ -212,13 +187,11 @@ int main(int argc, char* argv[])
 		Eigen::Vector3d(10, 156, 53),
 		Eigen::Vector3d(10, 156, 53),
 		Eigen::Vector3d(0, 0, 0),
-		0
-	);
+		0);
 
 	/* Carvalhos */
 
-	Object* oakLog1 = new Cilinder
-	(
+	Object *oakLog1 = new Cilinder(
 		10,
 		60,
 		Eigen::Vector3d(130, -100, -230),
@@ -226,31 +199,25 @@ int main(int argc, char* argv[])
 		Eigen::Vector3d(50, 31, 20),
 		Eigen::Vector3d(50, 31, 20),
 		Eigen::Vector3d(0, 0, 0),
-		0
-	);
+		0);
 
-	Object* oakLeavesBottom1 = new Sphere
-	(
+	Object *oakLeavesBottom1 = new Sphere(
 		30,
 		Eigen::Vector3d(130, -30, -230),
 		Eigen::Vector3d(12, 242, 0),
 		Eigen::Vector3d(12, 242, 0),
 		Eigen::Vector3d(0, 0, 0),
-		0
-	);
+		0);
 
-	Object* oakLeavesTop1 = new Sphere
-	(
+	Object *oakLeavesTop1 = new Sphere(
 		22,
 		Eigen::Vector3d(130, 0, -230),
 		Eigen::Vector3d(12, 242, 0),
 		Eigen::Vector3d(12, 242, 0),
 		Eigen::Vector3d(0, 0, 0),
-		0
-	);
+		0);
 
-	Object* oakLog2 = new Cilinder
-	(
+	Object *oakLog2 = new Cilinder(
 		10,
 		60,
 		Eigen::Vector3d(130, -100, -300),
@@ -258,31 +225,25 @@ int main(int argc, char* argv[])
 		Eigen::Vector3d(50, 31, 20),
 		Eigen::Vector3d(50, 31, 20),
 		Eigen::Vector3d(0, 0, 0),
-		0
-	);
+		0);
 
-	Object* oakLeavesBottom2 = new Sphere
-	(
+	Object *oakLeavesBottom2 = new Sphere(
 		30,
 		Eigen::Vector3d(130, -30, -300),
 		Eigen::Vector3d(12, 242, 0),
 		Eigen::Vector3d(12, 242, 0),
 		Eigen::Vector3d(0, 0, 0),
-		0
-	);
+		0);
 
-	Object* oakLeavesTop2 = new Sphere
-	(
+	Object *oakLeavesTop2 = new Sphere(
 		22,
 		Eigen::Vector3d(130, 0, -300),
 		Eigen::Vector3d(12, 242, 0),
 		Eigen::Vector3d(12, 242, 0),
 		Eigen::Vector3d(0, 0, 0),
-		0
-	);
+		0);
 
-	Object* oakLog3 = new Cilinder
-	(
+	Object *oakLog3 = new Cilinder(
 		10,
 		60,
 		Eigen::Vector3d(130, -100, -160),
@@ -290,33 +251,27 @@ int main(int argc, char* argv[])
 		Eigen::Vector3d(50, 31, 20),
 		Eigen::Vector3d(50, 31, 20),
 		Eigen::Vector3d(0, 0, 0),
-		0
-	);
+		0);
 
-	Object* oakLeavesBottom3 = new Sphere
-	(
+	Object *oakLeavesBottom3 = new Sphere(
 		30,
 		Eigen::Vector3d(130, -30, -160),
 		Eigen::Vector3d(12, 242, 0),
 		Eigen::Vector3d(12, 242, 0),
 		Eigen::Vector3d(0, 0, 0),
-		0
-	);
+		0);
 
-	Object* oakLeavesTop3 = new Sphere
-	(
+	Object *oakLeavesTop3 = new Sphere(
 		22,
 		Eigen::Vector3d(130, 0, -160),
 		Eigen::Vector3d(12, 242, 0),
 		Eigen::Vector3d(12, 242, 0),
 		Eigen::Vector3d(0, 0, 0),
-		0
-	);
+		0);
 
 	/* Mesa */
 
-	Object* table = new Cube
-	(
+	Object *table = new Cube(
 		Eigen::Vector3d(-50, -80, -180),
 		100,
 		10,
@@ -324,18 +279,14 @@ int main(int argc, char* argv[])
 		Eigen::Vector3d(50, 31, 20),
 		Eigen::Vector3d(50, 31, 20),
 		Eigen::Vector3d(0.3, 0.3, 0.3),
-		10
-	);
+		10);
 
-	HitBox* tableHitBox = new HitBox
-	(
+	HitBox *tableHitBox = new HitBox(
 		75,
 		Eigen::Vector3d(0, -80, -230),
-		Eigen::Vector3d(0, -70, -230)
-	);
+		Eigen::Vector3d(0, -70, -230));
 
-	Object* leg1 = new Cube
-	(
+	Object *leg1 = new Cube(
 		Eigen::Vector3d(-50, -100, -180),
 		10,
 		20,
@@ -343,18 +294,14 @@ int main(int argc, char* argv[])
 		Eigen::Vector3d(50, 31, 20),
 		Eigen::Vector3d(50, 31, 20),
 		Eigen::Vector3d(0.3, 0.3, 0.3),
-		10
-	);
+		10);
 
-	HitBox* leg1HitBox = new HitBox
-	(
+	HitBox *leg1HitBox = new HitBox(
 		8,
 		Eigen::Vector3d(-45, -100, -188),
-		Eigen::Vector3d(-45, -80, -188)
-	);
+		Eigen::Vector3d(-45, -80, -188));
 
-	Object* leg2 = new Cube
-	(
+	Object *leg2 = new Cube(
 		Eigen::Vector3d(40, -100, -180),
 		10,
 		20,
@@ -362,18 +309,14 @@ int main(int argc, char* argv[])
 		Eigen::Vector3d(50, 31, 20),
 		Eigen::Vector3d(50, 31, 20),
 		Eigen::Vector3d(0.3, 0.3, 0.3),
-		10
-	);
+		10);
 
-	HitBox* leg2HitBox = new HitBox
-	(
+	HitBox *leg2HitBox = new HitBox(
 		8,
 		Eigen::Vector3d(45, -100, -188),
-		Eigen::Vector3d(45, -80, -188)
-	);
+		Eigen::Vector3d(45, -80, -188));
 
-	Object* leg3 = new Cube
-	(
+	Object *leg3 = new Cube(
 		Eigen::Vector3d(-50, -100, -265),
 		10,
 		20,
@@ -381,18 +324,14 @@ int main(int argc, char* argv[])
 		Eigen::Vector3d(50, 31, 20),
 		Eigen::Vector3d(50, 31, 20),
 		Eigen::Vector3d(0.3, 0.3, 0.3),
-		10
-	);
+		10);
 
-	HitBox* leg3HitBox = new HitBox
-	(
+	HitBox *leg3HitBox = new HitBox(
 		8,
 		Eigen::Vector3d(-45, -100, -273),
-		Eigen::Vector3d(-45, -80, -273)
-	);
+		Eigen::Vector3d(-45, -80, -273));
 
-	Object* leg4 = new Cube
-	(
+	Object *leg4 = new Cube(
 		Eigen::Vector3d(40, -100, -265),
 		10,
 		20,
@@ -400,15 +339,12 @@ int main(int argc, char* argv[])
 		Eigen::Vector3d(50, 31, 20),
 		Eigen::Vector3d(50, 31, 20),
 		Eigen::Vector3d(0.3, 0.3, 0.3),
-		10
-	);
+		10);
 
-	HitBox* leg4HitBox = new HitBox
-	(
+	HitBox *leg4HitBox = new HitBox(
 		8,
 		Eigen::Vector3d(45, -100, -273),
-		Eigen::Vector3d(45, -80, -273)
-	);
+		Eigen::Vector3d(45, -80, -273));
 
 	tableHitBox->addObject(table);
 	leg1HitBox->addObject(leg1);
@@ -418,96 +354,80 @@ int main(int argc, char* argv[])
 
 	/* Roger */
 
-	Object* rogerBody = new Sphere
-	(
+	Object *rogerBody = new Sphere(
 		30,
 		Eigen::Vector3d(0, -70, -380),
 		Eigen::Vector3d(255, 255, 255),
 		Eigen::Vector3d(255, 255, 255),
 		Eigen::Vector3d(0, 0, 0),
-		0
-	);
+		0);
 
-	Object* rogerHead = new Sphere
-	(
+	Object *rogerHead = new Sphere(
 		20,
 		Eigen::Vector3d(0, -30, -380),
 		Eigen::Vector3d(255, 255, 255),
 		Eigen::Vector3d(255, 255, 255),
 		Eigen::Vector3d(0, 0, 0),
-		0
-	);
+		0);
 
-	Object* rogerLeftEye = new Sphere
-	(
+	Object *rogerLeftEye = new Sphere(
 		5,
 		Eigen::Vector3d(-10, -20, -365),
 		Eigen::Vector3d(50, 31, 20),
 		Eigen::Vector3d(50, 31, 20),
 		Eigen::Vector3d(0, 0, 0),
-		0
-	);
+		0);
 
-	Object* rogerRightEye = new Sphere
-	(
+	Object *rogerRightEye = new Sphere(
 		5,
 		Eigen::Vector3d(10, -20, -365),
 		Eigen::Vector3d(50, 31, 20),
 		Eigen::Vector3d(50, 31, 20),
 		Eigen::Vector3d(0, 0, 0),
-		0
-	);
+		0);
 
 	/* Bot�es */
 
-	Object* springButton = new Sphere
-	(
+	Object *springButton = new Sphere(
 		10,
 		Eigen::Vector3d(-40, -60, -230),
 		Eigen::Vector3d(255, 72, 132),
 		Eigen::Vector3d(255, 72, 132),
 		Eigen::Vector3d(40, 40, 40),
-		6
-	);
+		6);
 
-	Object* summerButton = new Sphere
-	(
+	Object *summerButton = new Sphere(
 		10,
 		Eigen::Vector3d(-13.3, -60, -230),
 		Eigen::Vector3d(12, 242, 0),
 		Eigen::Vector3d(12, 242, 0),
 		Eigen::Vector3d(40, 40, 40),
-		6
-	);
+		6);
 
-	Object* autumnButton = new Sphere
-	(
+	Object *autumnButton = new Sphere(
 		10,
 		Eigen::Vector3d(13.3, -60, -230),
 		Eigen::Vector3d(240, 104, 4),
 		Eigen::Vector3d(240, 104, 4),
 		Eigen::Vector3d(40, 40, 40),
-		6
-	);
+		6);
 
-	Object* winterButton = new Sphere
-	(
+	Object *winterButton = new Sphere(
 		10,
 		Eigen::Vector3d(40, -60, -230),
 		Eigen::Vector3d(44, 157, 201),
 		Eigen::Vector3d(44, 157, 201),
 		Eigen::Vector3d(40, 40, 40),
-		6
-	);
-	
+		6);
+
 	scene.addObject(sky);
 	scene.addObject(skyLeft);
 	scene.addObject(skyRight);
 	scene.addObject(skyTop);
 	scene.addObject(grass);
-	
+
 	scene.addObject(pineLeaves1);
-	
+
 	scene.addObject(pineLeaves2);
 	scene.addObject(pineLeaves3);
 	scene.addObject(pineLog1);
@@ -523,7 +443,7 @@ int main(int argc, char* argv[])
 	scene.addObject(oakLog1);
 	scene.addObject(oakLog2);
 	scene.addObject(oakLog3);
-	
+
 	scene.addHitBox(tableHitBox);
 	scene.addHitBox(leg1HitBox);
 	scene.addHitBox(leg2HitBox);
@@ -539,13 +459,13 @@ int main(int argc, char* argv[])
 	scene.addObject(summerButton);
 	scene.addObject(autumnButton);
 	scene.addObject(winterButton);
-	
+
 	Eigen::Vector3d pontualIntensity(0.7, 0.7, 0.7);
 	Eigen::Vector3d pontualOrigin(-30, 60, 0);
-	LightSource* pontual = new PontualSource(pontualOrigin, pontualIntensity);
+	LightSource *pontual = new PontualSource(pontualOrigin, pontualIntensity);
 
 	Eigen::Vector3d ambientIntensity(0.3, 0.3, 0.3);
-	LightSource* ambient = new AmbientSource(ambientIntensity);
+	LightSource *ambient = new AmbientSource(ambientIntensity);
 
 	scene.addSource(pontual);
 	scene.addSource(ambient);
@@ -574,17 +494,15 @@ int main(int argc, char* argv[])
 			}
 			else if (event.type == SDL_MOUSEBUTTONDOWN)
 			{
-				mouseX = (double) event.motion.x;
-				mouseY = (double) event.motion.y;
+				mouseX = (double)event.motion.x;
+				mouseY = (double)event.motion.y;
 
 				mouseY2 = canvas.jYMax - mouseY * canvas.deltaY - canvas.deltaY / 2;
 				mouseX2 = canvas.jXMin + mouseX * canvas.deltaX + canvas.deltaX / 2;
 
-				Ray pickRay
-				(
+				Ray pickRay(
 					origin,
-					Eigen::Vector3d(mouseX2, mouseY2, -canvas.windowDistance)
-				);
+					Eigen::Vector3d(mouseX2, mouseY2, -canvas.windowDistance));
 
 				if (springButton->hasInterceptedRay(pickRay) < 0)
 				{
@@ -592,76 +510,62 @@ int main(int argc, char* argv[])
 					{
 						scene.cleanObjects();
 
-						Object* grass = new Plane
-						(
+						Object *grass = new Plane(
 							springTexture,
 							Eigen::Vector3d(0, 1, 0),
 							Eigen::Vector3d(0, -100, 0),
 							Eigen::Vector3d(0, 0, 0),
 							Eigen::Vector3d(100, 100, 100),
 							Eigen::Vector3d(0, 0, 0),
-							0
-						);
+							0);
 
-						Object* oakLeavesBottom1 = new Sphere
-						(
+						Object *oakLeavesBottom1 = new Sphere(
 							30,
 							Eigen::Vector3d(130, -30, -230),
 							Eigen::Vector3d(255, 72, 132),
 							Eigen::Vector3d(255, 72, 132),
 							Eigen::Vector3d(0, 0, 0),
-							0
-						);
+							0);
 
-						Object* oakLeavesTop1 = new Sphere
-						(
+						Object *oakLeavesTop1 = new Sphere(
 							22,
 							Eigen::Vector3d(130, 0, -230),
 							Eigen::Vector3d(255, 72, 132),
 							Eigen::Vector3d(255, 72, 132),
 							Eigen::Vector3d(0, 0, 0),
-							0
-						);
+							0);
 
-						Object* oakLeavesBottom2 = new Sphere
-						(
+						Object *oakLeavesBottom2 = new Sphere(
 							30,
 							Eigen::Vector3d(130, -30, -300),
 							Eigen::Vector3d(255, 72, 132),
 							Eigen::Vector3d(255, 72, 132),
 							Eigen::Vector3d(0, 0, 0),
-							0
-						);
+							0);
 
-						Object* oakLeavesTop2 = new Sphere
-						(
+						Object *oakLeavesTop2 = new Sphere(
 							22,
 							Eigen::Vector3d(130, 0, -300),
 							Eigen::Vector3d(255, 72, 132),
 							Eigen::Vector3d(255, 72, 132),
 							Eigen::Vector3d(0, 0, 0),
-							0
-						);
+							0);
 
-						Object* oakLeavesBottom3 = new Sphere
-						(
+						Object *oakLeavesBottom3 = new Sphere(
 							30,
 							Eigen::Vector3d(130, -30, -160),
 							Eigen::Vector3d(255, 72, 132),
 							Eigen::Vector3d(255, 72, 132),
 							Eigen::Vector3d(0, 0, 0),
-							0
-						);
+							0);
 
-						Object* oakLeavesTop3 = new Sphere
-						(
+						Object *oakLeavesTop3 = new Sphere(
 							22,
 							Eigen::Vector3d(130, 0, -160),
 							Eigen::Vector3d(255, 72, 132),
 							Eigen::Vector3d(255, 72, 132),
 							Eigen::Vector3d(0, 0, 0),
-							0
-						);
+							0);
 
 						scene.addObject(grass);
 						scene.addObject(oakLeavesBottom1);
@@ -718,76 +622,62 @@ int main(int argc, char* argv[])
 					{
 						scene.cleanObjects();
 
-						Object* grass = new Plane
-						(
+						Object *grass = new Plane(
 							summerTexture,
 							Eigen::Vector3d(0, 1, 0),
 							Eigen::Vector3d(0, -100, 0),
 							Eigen::Vector3d(0, 0, 0),
 							Eigen::Vector3d(100, 100, 100),
 							Eigen::Vector3d(0, 0, 0),
-							0
-						);
+							0);
 
-						Object* oakLeavesBottom1 = new Sphere
-						(
+						Object *oakLeavesBottom1 = new Sphere(
 							30,
 							Eigen::Vector3d(130, -30, -230),
 							Eigen::Vector3d(12, 242, 0),
 							Eigen::Vector3d(12, 242, 0),
 							Eigen::Vector3d(0, 0, 0),
-							0
-						);
+							0);
 
-						Object* oakLeavesTop1 = new Sphere
-						(
+						Object *oakLeavesTop1 = new Sphere(
 							22,
 							Eigen::Vector3d(130, 0, -230),
 							Eigen::Vector3d(12, 242, 0),
 							Eigen::Vector3d(12, 242, 0),
 							Eigen::Vector3d(0, 0, 0),
-							0
-						);
+							0);
 
-						Object* oakLeavesBottom2 = new Sphere
-						(
+						Object *oakLeavesBottom2 = new Sphere(
 							30,
 							Eigen::Vector3d(130, -30, -300),
 							Eigen::Vector3d(12, 242, 0),
 							Eigen::Vector3d(12, 242, 0),
 							Eigen::Vector3d(0, 0, 0),
-							0
-						);
+							0);
 
-						Object* oakLeavesTop2 = new Sphere
-						(
+						Object *oakLeavesTop2 = new Sphere(
 							22,
 							Eigen::Vector3d(130, 0, -300),
 							Eigen::Vector3d(12, 242, 0),
 							Eigen::Vector3d(12, 242, 0),
 							Eigen::Vector3d(0, 0, 0),
-							0
-						);
+							0);
 
-						Object* oakLeavesBottom3 = new Sphere
-						(
+						Object *oakLeavesBottom3 = new Sphere(
 							30,
 							Eigen::Vector3d(130, -30, -160),
 							Eigen::Vector3d(12, 242, 0),
 							Eigen::Vector3d(12, 242, 0),
 							Eigen::Vector3d(0, 0, 0),
-							0
-						);
+							0);
 
-						Object* oakLeavesTop3 = new Sphere
-						(
+						Object *oakLeavesTop3 = new Sphere(
 							22,
 							Eigen::Vector3d(130, 0, -160),
 							Eigen::Vector3d(12, 242, 0),
 							Eigen::Vector3d(12, 242, 0),
 							Eigen::Vector3d(0, 0, 0),
-							0
-						);
+							0);
 
 						scene.addObject(grass);
 						scene.addObject(oakLeavesBottom1);
@@ -844,76 +734,62 @@ int main(int argc, char* argv[])
 					{
 						scene.cleanObjects();
 
-						Object* grass = new Plane
-						(
+						Object *grass = new Plane(
 							autumnTexture,
 							Eigen::Vector3d(0, 1, 0),
 							Eigen::Vector3d(0, -100, 0),
 							Eigen::Vector3d(0, 0, 0),
 							Eigen::Vector3d(100, 100, 100),
 							Eigen::Vector3d(0, 0, 0),
-							0
-						);
+							0);
 
-						Object* oakLeavesBottom1 = new Sphere
-						(
+						Object *oakLeavesBottom1 = new Sphere(
 							30,
 							Eigen::Vector3d(130, -30, -230),
 							Eigen::Vector3d(240, 104, 4),
 							Eigen::Vector3d(240, 104, 4),
 							Eigen::Vector3d(0, 0, 0),
-							0
-						);
+							0);
 
-						Object* oakLeavesTop1 = new Sphere
-						(
+						Object *oakLeavesTop1 = new Sphere(
 							22,
 							Eigen::Vector3d(130, 0, -230),
 							Eigen::Vector3d(240, 104, 4),
 							Eigen::Vector3d(240, 104, 4),
 							Eigen::Vector3d(0, 0, 0),
-							0
-						);
+							0);
 
-						Object* oakLeavesBottom2 = new Sphere
-						(
+						Object *oakLeavesBottom2 = new Sphere(
 							30,
 							Eigen::Vector3d(130, -30, -300),
 							Eigen::Vector3d(240, 104, 4),
 							Eigen::Vector3d(240, 104, 4),
 							Eigen::Vector3d(0, 0, 0),
-							0
-						);
+							0);
 
-						Object* oakLeavesTop2 = new Sphere
-						(
+						Object *oakLeavesTop2 = new Sphere(
 							22,
 							Eigen::Vector3d(130, 0, -300),
 							Eigen::Vector3d(240, 104, 4),
 							Eigen::Vector3d(240, 104, 4),
 							Eigen::Vector3d(0, 0, 0),
-							0
-						);
+							0);
 
-						Object* oakLeavesBottom3 = new Sphere
-						(
+						Object *oakLeavesBottom3 = new Sphere(
 							30,
 							Eigen::Vector3d(130, -30, -160),
 							Eigen::Vector3d(240, 104, 4),
 							Eigen::Vector3d(240, 104, 4),
 							Eigen::Vector3d(0, 0, 0),
-							0
-						);
+							0);
 
-						Object* oakLeavesTop3 = new Sphere
-						(
+						Object *oakLeavesTop3 = new Sphere(
 							22,
 							Eigen::Vector3d(130, 0, -160),
 							Eigen::Vector3d(240, 104, 4),
 							Eigen::Vector3d(240, 104, 4),
 							Eigen::Vector3d(0, 0, 0),
-							0
-						);
+							0);
 
 						scene.addObject(grass);
 						scene.addObject(oakLeavesBottom1);
@@ -970,76 +846,62 @@ int main(int argc, char* argv[])
 					{
 						scene.cleanObjects();
 
-						Object* grass = new Plane
-						(
+						Object *grass = new Plane(
 							winterTexture,
 							Eigen::Vector3d(0, 1, 0),
 							Eigen::Vector3d(0, -100, 0),
 							Eigen::Vector3d(0, 0, 0),
 							Eigen::Vector3d(100, 100, 100),
 							Eigen::Vector3d(0, 0, 0),
-							0
-						);
+							0);
 
-						Object* oakLeavesBottom1 = new Sphere
-						(
+						Object *oakLeavesBottom1 = new Sphere(
 							30,
 							Eigen::Vector3d(130, -30, -230),
 							Eigen::Vector3d(255, 255, 255),
 							Eigen::Vector3d(255, 255, 255),
 							Eigen::Vector3d(0, 0, 0),
-							0
-						);
+							0);
 
-						Object* oakLeavesTop1 = new Sphere
-						(
+						Object *oakLeavesTop1 = new Sphere(
 							22,
 							Eigen::Vector3d(130, 0, -230),
 							Eigen::Vector3d(255, 255, 255),
 							Eigen::Vector3d(255, 255, 255),
 							Eigen::Vector3d(0, 0, 0),
-							0
-						);
+							0);
 
-						Object* oakLeavesBottom2 = new Sphere
-						(
+						Object *oakLeavesBottom2 = new Sphere(
 							30,
 							Eigen::Vector3d(130, -30, -300),
 							Eigen::Vector3d(255, 255, 255),
 							Eigen::Vector3d(255, 255, 255),
 							Eigen::Vector3d(0, 0, 0),
-							0
-						);
+							0);
 
-						Object* oakLeavesTop2 = new Sphere
-						(
+						Object *oakLeavesTop2 = new Sphere(
 							22,
 							Eigen::Vector3d(130, 0, -300),
 							Eigen::Vector3d(255, 255, 255),
 							Eigen::Vector3d(255, 255, 255),
 							Eigen::Vector3d(0, 0, 0),
-							0
-						);
+							0);
 
-						Object* oakLeavesBottom3 = new Sphere
-						(
+						Object *oakLeavesBottom3 = new Sphere(
 							30,
 							Eigen::Vector3d(130, -30, -160),
 							Eigen::Vector3d(255, 255, 255),
 							Eigen::Vector3d(255, 255, 255),
 							Eigen::Vector3d(0, 0, 0),
-							0
-						);
+							0);
 
-						Object* oakLeavesTop3 = new Sphere
-						(
+						Object *oakLeavesTop3 = new Sphere(
 							22,
 							Eigen::Vector3d(130, 0, -160),
 							Eigen::Vector3d(255, 255, 255),
 							Eigen::Vector3d(255, 255, 255),
 							Eigen::Vector3d(0, 0, 0),
-							0
-						);
+							0);
 
 						scene.addObject(grass);
 						scene.addObject(oakLeavesBottom1);
