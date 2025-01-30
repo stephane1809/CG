@@ -10,7 +10,7 @@
  * @param Y A coordenada Y do pixel.
  * @return A cor do pixel na forma de uma estrutura SDL_Color.
  */
-SDL_Color GetPixelColor(const SDL_Surface* pSurface, const int X, const int Y)
+SDL_Color GetPixelColor(const SDL_Surface *pSurface, const int X, const int Y)
 {
 	// Bytes per pixel
 	const Uint8 Bpp = pSurface->format->BytesPerPixel;
@@ -21,11 +21,11 @@ SDL_Color GetPixelColor(const SDL_Surface* pSurface, const int X, const int Y)
 	pSurface->pitch		= the length of a row of pixels (in bytes)
 	X and Y				= the offset on where on the image to retrieve the pixel, (0, 0) is in the upper left corner of the image
 	*/
-	Uint8* pPixel = (Uint8*)pSurface->pixels + Y * pSurface->pitch + X * Bpp;
+	Uint8 *pPixel = (Uint8 *)pSurface->pixels + Y * pSurface->pitch + X * Bpp;
 
-	Uint32 PixelData = *(Uint32*)pPixel;
+	Uint32 PixelData = *(Uint32 *)pPixel;
 
-	SDL_Color Color = { 0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE };
+	SDL_Color Color = {0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE};
 
 	// Retrieve the RGB values of the specific pixel
 	SDL_GetRGB(PixelData, pSurface->format, &Color.r, &Color.g, &Color.b);
@@ -35,7 +35,7 @@ SDL_Color GetPixelColor(const SDL_Surface* pSurface, const int X, const int Y)
 
 /**
  * @brief Construtor da classe Plane.
- * 
+ *
  * @param texture Superfície SDL que representa a textura do plano.
  * @param normal Vetor 3D que representa a normal do plano.
  * @param center Vetor 3D que representa o centro do plano.
@@ -44,7 +44,7 @@ SDL_Color GetPixelColor(const SDL_Surface* pSurface, const int X, const int Y)
  * @param kEsp Vetor 3D que representa o coeficiente de reflexão especular do plano.
  * @param specularIndex Índice de especularidade do plano.
  */
-Plane::Plane(SDL_Surface* texture, Eigen::Vector3d normal, Eigen::Vector3d center, Eigen::Vector3d kAmbient, Eigen::Vector3d kDif, Eigen::Vector3d kEsp, double specularIndex)
+Plane::Plane(SDL_Surface *texture, Eigen::Vector3d normal, Eigen::Vector3d center, Eigen::Vector3d kAmbient, Eigen::Vector3d kDif, Eigen::Vector3d kEsp, double specularIndex)
 {
 	this->texture = texture;
 	this->normal = normal.normalized();
@@ -98,7 +98,6 @@ double Plane::hasInterceptedRay(Ray ray)
 	return 1;
 }
 
-
 /**
  * @brief Calcula a cor do plano no ponto de interseção com um raio.
  *
@@ -108,7 +107,7 @@ double Plane::hasInterceptedRay(Ray ray)
  * @param shadows Vetor de booleanos indicando se há sombra no ponto de interseção.
  * @return Cor do plano no ponto de interseção.
  */
-Eigen::Vector3d Plane::computeColor(double tInt, Ray ray, std::vector<LightSource*> sources, std::vector<bool> shadows)
+Eigen::Vector3d Plane::computeColor(double tInt, Ray ray, std::vector<LightSource *> sources, std::vector<bool> shadows)
 {
 	Eigen::Vector3d intesityEye(0, 0, 0);
 
@@ -135,7 +134,7 @@ Eigen::Vector3d Plane::computeColor(double tInt, Ray ray, std::vector<LightSourc
 	}
 
 	int idx = 0;
-	for (auto& source : sources)
+	for (auto &source : sources)
 	{
 		source->computeIntensity(pInt, ray, &intesityAmbient, &intesityDifuse, &intesitySpecular, normal, this->kAmbient, this->kDif, this->kEsp, this->specularIndex, shadows[idx]);
 		idx++;
@@ -150,9 +149,9 @@ void Plane::translate(double x, double y, double z)
 {
 	Eigen::Matrix4d m;
 	m << 1, 0, 0, x,
-		 0, 1, 0, y,
-		 0, 0, 1, z,
-		 0, 0, 0, 1;
+		0, 1, 0, y,
+		0, 0, 1, z,
+		0, 0, 0, 1;
 
 	Eigen::Vector4d center4;
 	center4 << this->center[0], this->center[1], this->center[2], 1;
@@ -164,10 +163,9 @@ void Plane::translate(double x, double y, double z)
 
 void Plane::scale(double x, double y, double z)
 {
-
 }
 
-void  Plane::rotateX(double angle)
+void Plane::rotateX(double angle)
 {
 	Eigen::Matrix4d rx;
 	rx << 1, 0, 0, 0,
@@ -209,7 +207,7 @@ void  Plane::rotateX(double angle)
 	this->axis2 = (normal.cross(this->axis1)).normalized();
 }
 
-void  Plane::rotateY(double angle)
+void Plane::rotateY(double angle)
 {
 	Eigen::Matrix4d rx;
 	rx << cos(angle), 0, sin(angle), 0,
@@ -251,7 +249,7 @@ void  Plane::rotateY(double angle)
 	this->axis2 = (normal.cross(this->axis1)).normalized();
 }
 
-void  Plane::rotateZ(double angle)
+void Plane::rotateZ(double angle)
 {
 	Eigen::Matrix4d rx;
 	rx << cos(angle), -sin(angle), 0, 0,

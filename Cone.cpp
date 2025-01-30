@@ -3,7 +3,7 @@
 
 /**
  * @brief Construtor da classe Cone.
- * 
+ *
  * @param angle O ângulo do cone em radianos.
  * @param centerBase O centro da base do cone.
  * @param vertex O vértice do cone.
@@ -34,7 +34,7 @@ Cone::Cone(double angle, Eigen::Vector3d centerBase, Eigen::Vector3d vertex, Eig
 
 /**
  * @brief Construtor da classe Cone.
- * 
+ *
  * @param radius O raio do cone.
  * @param height A altura do cone.
  * @param centerBase O centro da base do cone.
@@ -65,7 +65,7 @@ Cone::Cone(double radius, double height, Eigen::Vector3d centerBase, Eigen::Vect
 
 /**
  * Verifica se um raio intercepta o cone e retorna a distância do ponto de interseção ao ponto inicial do raio.
- * 
+ *
  * @param ray O raio a ser verificado.
  * @return A distância do ponto de interseção ao ponto inicial do raio. Retorna 1 se não houver interseção.
  */
@@ -98,7 +98,7 @@ double Cone::hasInterceptedRay(Ray ray)
 
 	double base = this->bottom->hasInterceptedRay(ray);
 
-	std::vector <double> distances = { returnValue, base };
+	std::vector<double> distances = {returnValue, base};
 
 	double minimum = -INFINITY;
 	int idx = -1;
@@ -121,14 +121,14 @@ double Cone::hasInterceptedRay(Ray ray)
 
 /**
  * Calcula a cor resultante da interseção do raio com o cone.
- * 
+ *
  * @param tInt O parâmetro de interseção do raio com o cone.
  * @param ray O raio que intersecta o cone.
  * @param sources Um vetor de fontes de luz.
  * @param shadows Um vetor de booleanos indicando se há sombras nas fontes de luz.
  * @return A cor resultante da interseção do raio com o cone.
  */
-Eigen::Vector3d Cone::computeColor(double tInt, Ray ray, std::vector<LightSource*> sources, std::vector<bool> shadows)
+Eigen::Vector3d Cone::computeColor(double tInt, Ray ray, std::vector<LightSource *> sources, std::vector<bool> shadows)
 {
 	// se o cone for o plano circular inferior, retorna a cor do plano0
 	if (this->structure == 0)
@@ -146,8 +146,8 @@ Eigen::Vector3d Cone::computeColor(double tInt, Ray ray, std::vector<LightSource
 		Eigen::Vector3d normal = -((this->direction.cross(PI)).cross(PI)).normalized();
 
 		int idx = 0;
-		for (auto& source : sources)
-		{	
+		for (auto &source : sources)
+		{
 			// calculando a intensidade difusa e especular
 			source->computeIntensity(pInt, ray, &intesityAmbient, &intesityDifuse, &intesitySpecular, normal, this->kAmbient, this->kDif, this->kEsp, this->specularIndex, shadows[idx]);
 			idx++;
@@ -164,7 +164,7 @@ Eigen::Vector3d Cone::computeColor(double tInt, Ray ray, std::vector<LightSource
 
 /**
  * Translada o cone nas coordenadas (x, y, z).
- * 
+ *
  * @param x A coordenada x do vetor de translação.
  * @param y A coordenada y do vetor de translação.
  * @param z A coordenada z do vetor de translação.
@@ -174,9 +174,9 @@ void Cone::translate(double x, double y, double z)
 	Eigen::Matrix4d m;
 	// matriz de translacao
 	m << 1, 0, 0, x,
-		 0, 1, 0, y,
-		 0, 0, 1, z,
-		 0, 0, 0, 1;
+		0, 1, 0, y,
+		0, 0, 1, z,
+		0, 0, 0, 1;
 
 	Eigen::Vector4d centerTop4;
 	Eigen::Vector4d centerBase4;
@@ -196,7 +196,7 @@ void Cone::translate(double x, double y, double z)
 
 /**
  * @brief Escala o cone nas direções x, y e z.
- * 
+ *
  * @param x Fator de escala na direção x (raio).
  * @param y Fator de escala na direção y (altura).
  * @param z Fator de escala na direção z (não utilizado).
@@ -219,10 +219,10 @@ void Cone::scale(double x, double y, double z)
 
 /**
  * Rotaciona o cone em torno do eixo X por um determinado ângulo.
- * 
+ *
  * @param angle O ângulo de rotação em radianos.
  */
-void  Cone::rotateX(double angle)
+void Cone::rotateX(double angle)
 {
 	Eigen::Matrix4d rx;
 	// matriz de rotacao em torno do eixo x
@@ -233,10 +233,10 @@ void  Cone::rotateX(double angle)
 
 	Eigen::Vector4d newDir;
 	newDir << this->direction[0], this->direction[1], this->direction[2], 0;
-	
+
 	// rotacionando o vetor direcao
 	newDir = rx * newDir;
-	
+
 	// atualizando o vetor direcao
 	this->direction << newDir[0], newDir[1], newDir[2];
 	this->direction = (this->direction).normalized();
@@ -248,10 +248,10 @@ void  Cone::rotateX(double angle)
 
 /**
  * Rotaciona o cone em torno do eixo Y por um determinado ângulo.
- * 
+ *
  * @param angle O ângulo de rotação em radianos.
  */
-void  Cone::rotateY(double angle)
+void Cone::rotateY(double angle)
 {
 	Eigen::Matrix4d ry;
 	// matriz de rotacao em torno do eixo y
@@ -267,7 +267,7 @@ void  Cone::rotateY(double angle)
 	newDir = ry * newDir;
 	this->direction << newDir[0], newDir[1], newDir[2];
 	this->direction = (this->direction).normalized();
-	
+
 	// atualizando o vertice e o centro da base
 	this->vertex = this->centerBase + this->height * this->direction;
 	this->bottom = new CircularPlane(-this->direction, this->centerBase, this->radius, this->kAmbient, this->kDif, this->kEsp, this->specularIndex);
@@ -275,11 +275,11 @@ void  Cone::rotateY(double angle)
 
 /**
  * Rotaciona o cone em torno do eixo Z por um determinado ângulo.
- * 
+ *
  * @param angle O ângulo de rotação em radianos.
  */
-void  Cone::rotateZ(double angle)
-{	
+void Cone::rotateZ(double angle)
+{
 	// matriz de rotacao em torno do eixo z
 	Eigen::Matrix4d rz;
 	rz << cos(angle), -sin(angle), 0, 0,
@@ -302,22 +302,23 @@ void  Cone::rotateZ(double angle)
 
 /**
  * Converte a posição do cone para o sistema de coordenadas da câmera.
- * 
+ *
  * @param transformationMatrix A matriz de transformação que será aplicada à posição do cone.
  */
 void Cone::convertToCamera(Eigen::Matrix4d transformationMatrix)
 {
 	Eigen::Vector4d vertex;
 	Eigen::Vector4d centerBase4;
+	Eigen::Vector4d base;
 
 	// convertendo o vertice e o centro da base para coordenadas homogeneas
 	vertex << this->vertex[0], this->vertex[1], this->vertex[2], 1;
 	base << this->centerBase[0], this->centerBase[1], this->centerBase[2], 1;
-	
+
 	// convertendo o vertice e o centro da base para o sistema de coordenadas da camera
 	vertex = transformationMatrix * vertex;
 	base = transformationMatrix * base;
-	
+
 	// atualizando o vertice e o centro da base
 	this->vertex << vertex[0], vertex[1], vertex[2];
 	this->centerBase << base[0], base[1], base[2];

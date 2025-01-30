@@ -11,11 +11,11 @@
 class Tensor
 {
 public:
-	Eigen::ArrayXXd red;    /**< Matriz de cores vermelhas. */
-	Eigen::ArrayXXd green;  /**< Matriz de cores verdes. */
-	Eigen::ArrayXXd blue;   /**< Matriz de cores azuis. */
-	int numColumns;         /**< Número de colunas da matriz. */
-	int numLines;           /**< Número de linhas da matriz. */
+	Eigen::ArrayXXd red;   /**< Matriz de cores vermelhas. */
+	Eigen::ArrayXXd green; /**< Matriz de cores verdes. */
+	Eigen::ArrayXXd blue;  /**< Matriz de cores azuis. */
+	int numColumns;		   /**< Número de colunas da matriz. */
+	int numLines;		   /**< Número de linhas da matriz. */
 
 	/**
 	 * Construtor da classe Tensor.
@@ -29,6 +29,5 @@ public:
 	 */
 	void normalize();
 };
-class Tensor
 
 #endif

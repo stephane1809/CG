@@ -17,7 +17,7 @@ public:
 	 * @param intensity A intensidade da luz emitida pela fonte pontual.
 	 */
 	PontualSource(Eigen::Vector3d origin, Eigen::Vector3d intensity);
-};
+
 	/**
 	 * Obtém a direção da luz emitida pela fonte pontual em um determinado ponto.
 	 * @param pInt O ponto de interesse.
@@ -39,8 +39,8 @@ public:
 	 * @param specularIndex O índice de especularidade.
 	 * @param shadowed Indica se o ponto de interesse está em sombra.
 	 */
-	void computeIntensity(Eigen::Vector3d pInt, Ray ray, Eigen::Vector3d* ptrIntesityAmbient, Eigen::Vector3d* ptrIntesityDifuse, Eigen::Vector3d* ptrIntesitySpecular, 
-		Eigen::Vector3d normal, Eigen::Vector3d kAmbient, Eigen::Vector3d kDif, Eigen::Vector3d kEsp, int specularIndex, bool shadowed);
+	void computeIntensity(Eigen::Vector3d pInt, Ray ray, Eigen::Vector3d *ptrIntesityAmbient, Eigen::Vector3d *ptrIntesityDifuse, Eigen::Vector3d *ptrIntesitySpecular,
+						  Eigen::Vector3d normal, Eigen::Vector3d kAmbient, Eigen::Vector3d kDif, Eigen::Vector3d kEsp, int specularIndex, bool shadowed);
 
 	/**
 	 * Converte a posição da fonte pontual para o sistema de coordenadas da câmera.

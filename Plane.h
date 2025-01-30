@@ -1,5 +1,5 @@
 #include "Object.h"
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 #ifndef Plane_H
 #define Plane_H
@@ -13,7 +13,7 @@ public:
 	Eigen::Vector3d normal; /**< Vetor normal ao plano */
 	Eigen::Vector3d center; /**< Ponto central do plano */
 
-	SDL_Surface* texture; /**< Textura do plano */
+	SDL_Surface *texture; /**< Textura do plano */
 
 	Eigen::Vector3d axis1; /**< Primeiro eixo do plano */
 	Eigen::Vector3d axis2; /**< Segundo eixo do plano */
@@ -28,7 +28,7 @@ public:
 	 * @param kEsp Coeficiente de reflexão especular.
 	 * @param specularIndex Índice de reflexão especular.
 	 */
-	Plane(SDL_Surface* texture, Eigen::Vector3d normal, Eigen::Vector3d center, Eigen::Vector3d kAmbient, Eigen::Vector3d kDif, Eigen::Vector3d kEsp, double specularIndex);
+	Plane(SDL_Surface *texture, Eigen::Vector3d normal, Eigen::Vector3d center, Eigen::Vector3d kAmbient, Eigen::Vector3d kDif, Eigen::Vector3d kEsp, double specularIndex);
 
 	/**
 	 * @brief Verifica se um raio intercepta o plano.
@@ -45,7 +45,7 @@ public:
 	 * @param shadows Vetor de booleanos indicando se há sombra no ponto de interseção.
 	 * @return Cor do plano no ponto de interseção.
 	 */
-	Eigen::Vector3d computeColor(double tInt, Ray ray, std::vector<LightSource*> sources, std::vector<bool> shadows);
+	Eigen::Vector3d computeColor(double tInt, Ray ray, std::vector<LightSource *> sources, std::vector<bool> shadows);
 
 	/**
 	 * @brief Translada o plano nas direções x, y e z.
