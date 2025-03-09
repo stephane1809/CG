@@ -1,9 +1,7 @@
 # Computação Gráfica
-Professor: **Creto**  
+
 Linguagem: **C++**
-| Terça| Quinta |
-| --- | --- |
-| 10:00 - 12:00 | 10:00 - 12:00 |
+
 
 ![image](screenshot.png)
 
