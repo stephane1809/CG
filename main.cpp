@@ -69,9 +69,9 @@ int main(int argc, char *argv[])
 	Canvas canvas(windowDistance, windowWidth, windowHeight, numLines, numColumns);
 	Scene scene;
 	Camera *camera = new Camera(
-		Eigen::Vector3d(0, -20, -350),
-		Eigen::Vector3d(0, -20, 0),
-		Eigen::Vector3d(0, 1, 0));
+		Eigen::Vector3d(0, 50, 10), // A posição da câmera.
+		Eigen::Vector3d(0, 45, 0),	// O ponto para onde a câmera está olhando.
+		Eigen::Vector3d(0, 1, 0));	// O vetor de orientação da câmera.
 	scene.setCamera(camera);
 
 	// Texturas
@@ -486,6 +486,9 @@ int main(int argc, char *argv[])
 
 	while (isRunning)
 	{
+		const Uint8 *keystates = SDL_GetKeyboardState(NULL);
+		camera->processInput(keystates, 5.0);
+
 		while (SDL_PollEvent(&event))
 		{
 			if (event.type == SDL_QUIT)
@@ -962,6 +965,10 @@ int main(int argc, char *argv[])
 		}
 
 		SDL_RenderClear(renderer);
+
+		// Atualizar a matriz de projeção da câmera
+		// Tensor display = canvas.raycast(origin, scene, false);
+		// display.normalize();
 
 		for (int i = 0; i < numLines; i++)
 		{
