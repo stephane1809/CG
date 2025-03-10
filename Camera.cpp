@@ -1,5 +1,6 @@
 #include "Camera.h"
 #include <SDL2/SDL.h> // Lib gr�fica
+#include <iostream>
 
 /**
  * @brief Construtor da classe Camera.
@@ -39,37 +40,46 @@ Eigen::Matrix4d Camera::getTransformationMatrix()
 
 void Camera::processInput(const Uint8 *keystates, double speed)
 {
+	std::cout << "Teclas sendo processadas..." << std::endl;
+	std::cout << "Antes da movimentação: " << position.transpose() << std::endl;
+
 	// Movimentação para frente e para trás (W e S)
 	if (keystates[SDL_SCANCODE_W])
 	{
+		std::cout << "Movendo para frente" << std::endl;
 		position -= k * speed; // Move na direção da câmera
-		lookAt -= k * speed;
 	}
 	if (keystates[SDL_SCANCODE_S])
 	{
+		std::cout << "Movendo para trás" << std::endl;
 		position += k * speed; // Move para trás
-		lookAt += k * speed;
 	}
 
 	// Movimentação lateral (A e D)
 	if (keystates[SDL_SCANCODE_A])
 	{
+		std::cout << "Movendo para esquerda" << std::endl;
 		position -= i * speed; // Move para a esquerda
-		lookAt -= i * speed;
 	}
 	if (keystates[SDL_SCANCODE_D])
 	{
+		std::cout << "Movendo para direita" << std::endl;
 		position += i * speed; // Move para a direita
-		lookAt += i * speed;
 	}
 
+	std::cout << "Depois da movimentação: " << position.transpose() << std::endl;
+	updateCameraMatrix();
+}
+
+void Camera::updateCameraMatrix()
+{
 	// Recalcula os vetores da câmera após a movimentação
-	k = (position - lookAt).normalized();
-	i = (viewUp.cross(k)).normalized();
-	j = k.cross(i);
+	this->k = (lookAt - position).normalized();
+	this->i = viewUp.cross(k).normalized();
+	this->j = k.cross(i).normalized();
 
 	// Atualiza a matriz de transformação
-	transformationMatrix << i[0], i[1], i[2], -(i.dot(position)),
+	this->transformationMatrix << i[0], i[1], i[2], -(i.dot(position)),
 		j[0], j[1], j[2], -(j.dot(position)),
 		k[0], k[1], k[2], -(k.dot(position)),
 		0, 0, 0, 1;

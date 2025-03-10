@@ -486,14 +486,32 @@ int main(int argc, char *argv[])
 
 	while (isRunning)
 	{
-		const Uint8 *keystates = SDL_GetKeyboardState(NULL);
-		camera->processInput(keystates, 5.0);
-
 		while (SDL_PollEvent(&event))
 		{
 			if (event.type == SDL_QUIT)
 			{
 				isRunning = false;
+			}
+			else if (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP)
+			{
+				// Processar entrada do teclado
+				const Uint8 *keystates = SDL_GetKeyboardState(NULL);
+				Eigen::Vector3d oldPosition = camera->position; // Guarda a posição antiga
+				camera->processInput(keystates, 5.0);
+				camera->updateCameraMatrix();
+
+				// camera->updateCameraMatrix();
+				// Tensor display = canvas.raycast(camera->position, scene, false);
+				// std::cout << "Raycasting atualizado para posição: " << camera->position.transpose() << std::endl;
+				// display.normalize();
+
+				// Se a posição mudou, refaz o raycasting
+				// if (oldPosition != camera->position)
+				// {
+				// 	Tensor display = canvas.raycast(camera->position, scene, false);
+				// 	std::cout << "Raycasting atualizado para posição: " << camera->position.transpose() << std::endl;
+				// 	display.normalize();
+				// }
 			}
 			else if (event.type == SDL_MOUSEBUTTONDOWN)
 			{
@@ -966,15 +984,14 @@ int main(int argc, char *argv[])
 
 		SDL_RenderClear(renderer);
 
-		// Atualizar a matriz de projeção da câmera
-		// Tensor display = canvas.raycast(origin, scene, false);
-		// display.normalize();
-
 		for (int i = 0; i < numLines; i++)
 		{
 			for (int j = 0; j < numColumns; j++)
 			{
-				SDL_SetRenderDrawColor(renderer, (int)display.red(i, j), (int)display.green(i, j), (int)display.blue(i, j), 255);
+				SDL_SetRenderDrawColor(renderer,
+									   (int)display.red(i, j),
+									   (int)display.green(i, j),
+									   (int)display.blue(i, j), 255);
 				SDL_RenderDrawPoint(renderer, j, i);
 			}
 		}

@@ -33,6 +33,7 @@ public:
 	Eigen::Matrix4d getTransformationMatrix();
 
 	void processInput(const Uint8 *keystates, double speed); // Método para processar entrada do teclado
+	void updateCameraMatrix();
 };
 
 #endif
