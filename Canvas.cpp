@@ -3,7 +3,7 @@
 
 /**
  * @brief Construtor da classe Canvas.
- * 
+ *
  * @param windowDistance Distância da câmera para o plano de projeção.
  * @param windowWidth Largura do plano de projeção.
  * @param windowHeight Altura do plano de projeção.
@@ -13,22 +13,21 @@
 Canvas::Canvas(double windowDistance, double windowWidth, double windowHeight, double numLines, double numColumns)
 {
 	this->windowDistance = windowDistance;
-	this->windowWidth = windowWidth;  // pov_w
-	this->windowHeight = windowHeight;  // pov_h
+	this->windowWidth = windowWidth;   // pov_w
+	this->windowHeight = windowHeight; // pov_h
 	this->numLines = numLines;
 	this->numColumns = numColumns;
 
-	this->deltaX = windowWidth / numColumns;  // dx
-	this->deltaY = windowHeight / numLines;  // dy
+	this->deltaX = windowWidth / numColumns; // dx
+	this->deltaY = windowHeight / numLines;	 // dy
 
-	this->jXMin = -(windowWidth / 2);  // - half_w
-	this->jYMax = windowHeight / 2;  // half_h
+	this->jXMin = -(windowWidth / 2); // - half_w
+	this->jYMax = windowHeight / 2;	  // half_h
 }
-
 
 /**
  * @brief Classe que representa um tensor.
- * 
+ *
  * Um tensor é uma estrutura de dados multidimensional que armazena elementos de um determinado tipo.
  * Neste caso, o tensor é utilizado para armazenar os valores RGB de cada pixel em um canvas.
  */
@@ -55,7 +54,7 @@ Tensor Canvas::raycast(Eigen::Vector3d observable, Scene scene, bool toCamera)
 	}
 
 	std::vector<double> distanceToObjects(numObjectsVector);
-	std::vector<Object*> objects(numObjectsVector);
+	std::vector<Object *> objects(numObjectsVector);
 	int idx;
 
 	for (int l = 0; l < this->numLines; l++)
@@ -72,7 +71,7 @@ Tensor Canvas::raycast(Eigen::Vector3d observable, Scene scene, bool toCamera)
 
 			idx = 0;
 
-			std::vector <bool> isShadowed;
+			std::vector<bool> isShadowed;
 
 			/*Calculamos as distancias para cada objeto
 			presente na cena ou em alguma hitbox*/
@@ -115,8 +114,8 @@ Tensor Canvas::raycast(Eigen::Vector3d observable, Scene scene, bool toCamera)
 			{
 				Eigen::Vector3d pInt = ray.initialPoint + minimum * ray.direction;
 				Eigen::Vector3d sourceDirection(0, 0, 0);
-					
-				for (auto& source : scene.sources)
+
+				for (auto &source : scene.sources)
 				{
 					int idx2 = 0;
 					sourceDirection = source->getDirection(pInt);
@@ -185,7 +184,6 @@ Tensor Canvas::raycast(Eigen::Vector3d observable, Scene scene, bool toCamera)
 				canvas.green(l, c) = 0;
 				canvas.blue(l, c) = 0;
 			}
-			
 		}
 	}
 

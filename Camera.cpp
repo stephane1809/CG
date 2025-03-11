@@ -74,9 +74,9 @@ void Camera::processInput(const Uint8 *keystates, double speed)
 void Camera::updateCameraMatrix()
 {
 	// Recalcula os vetores da câmera após a movimentação
-	this->k = (lookAt - position).normalized();
-	this->i = viewUp.cross(k).normalized();
-	this->j = k.cross(i).normalized();
+	this->k = (position - lookAt).normalized();
+	this->i = (viewUp.cross(k)).normalized();
+	this->j = k.cross(i);
 
 	// Atualiza a matriz de transformação
 	this->transformationMatrix << i[0], i[1], i[2], -(i.dot(position)),
