@@ -63,6 +63,8 @@ public:
 	 */
 	void convertObjectsToCamera(bool lights);
 
+	void removeObject(Object *obj);
+
 	/**
 	 * @brief Obtém o número de elementos da cena.
 	 *

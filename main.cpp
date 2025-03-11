@@ -24,6 +24,8 @@ Scene scene;
 // Posi��o da c�mera
 Eigen::Vector3d origin(0, 0, 0);
 
+const double zoomFactor = 1.5;
+
 // Par�metros da janela e canvas
 double windowDistance = 30;
 double windowWidth = 60;
@@ -55,6 +57,24 @@ std::vector<Camera *> cameras = {
 
 int currentCameraIndex = 0;
 Camera *camera = cameras[currentCameraIndex];
+
+/* Bot�es */
+
+Object *summerButton = new Sphere(
+	10,
+	Eigen::Vector3d(-13.3, -60, -230),
+	Eigen::Vector3d(255, 0, 0),
+	Eigen::Vector3d(255, 0, 0),
+	Eigen::Vector3d(40, 40, 40),
+	6);
+
+Object *autumnButton = new Sphere(
+	10,
+	Eigen::Vector3d(13.3, -60, -230),
+	Eigen::Vector3d(44, 157, 201),
+	Eigen::Vector3d(44, 157, 201),
+	Eigen::Vector3d(40, 40, 40),
+	6);
 
 void background()
 {
@@ -97,7 +117,7 @@ void background()
 		0);
 
 	Object *grass = new Plane(
-		summerTexture,
+		springTexture,
 		Eigen::Vector3d(0, 1, 0),
 		Eigen::Vector3d(0, -100, 0),
 		Eigen::Vector3d(0, 0, 0),
@@ -106,26 +126,6 @@ void background()
 		0);
 
 	/* Pinheiros */
-
-	Object *pineLog1 = new Cilinder(
-		10,
-		60,
-		Eigen::Vector3d(-130, -100, -230),
-		Eigen::Vector3d(0, 1, 0),
-		Eigen::Vector3d(50, 31, 20),
-		Eigen::Vector3d(50, 31, 20),
-		Eigen::Vector3d(0, 0, 0),
-		0);
-
-	Object *pineLeaves1 = new Cone(
-		30,
-		50,
-		Eigen::Vector3d(-130, -40, -230),
-		Eigen::Vector3d(0, 1, 0),
-		Eigen::Vector3d(10, 156, 53),
-		Eigen::Vector3d(10, 156, 53),
-		Eigen::Vector3d(0, 0, 0),
-		0);
 
 	Object *pineLog2 = new Cilinder(
 		10,
@@ -168,32 +168,6 @@ void background()
 		0);
 
 	/* Carvalhos */
-
-	Object *oakLog1 = new Cilinder(
-		10,
-		60,
-		Eigen::Vector3d(130, -100, -230),
-		Eigen::Vector3d(0, 1, 0),
-		Eigen::Vector3d(50, 31, 20),
-		Eigen::Vector3d(50, 31, 20),
-		Eigen::Vector3d(0, 0, 0),
-		0);
-
-	Object *oakLeavesBottom1 = new Sphere(
-		30,
-		Eigen::Vector3d(130, -30, -230),
-		Eigen::Vector3d(12, 242, 0),
-		Eigen::Vector3d(12, 242, 0),
-		Eigen::Vector3d(0, 0, 0),
-		0);
-
-	Object *oakLeavesTop1 = new Sphere(
-		22,
-		Eigen::Vector3d(130, 0, -230),
-		Eigen::Vector3d(12, 242, 0),
-		Eigen::Vector3d(12, 242, 0),
-		Eigen::Vector3d(0, 0, 0),
-		0);
 
 	Object *oakLog2 = new Cilinder(
 		10,
@@ -364,61 +338,24 @@ void background()
 		Eigen::Vector3d(0, 0, 0),
 		0);
 
-	/* Bot�es */
-
-	Object *springButton = new Sphere(
-		10,
-		Eigen::Vector3d(-40, -60, -230),
-		Eigen::Vector3d(255, 72, 132),
-		Eigen::Vector3d(255, 72, 132),
-		Eigen::Vector3d(40, 40, 40),
-		6);
-
-	Object *summerButton = new Sphere(
-		10,
-		Eigen::Vector3d(-13.3, -60, -230),
-		Eigen::Vector3d(12, 242, 0),
-		Eigen::Vector3d(12, 242, 0),
-		Eigen::Vector3d(40, 40, 40),
-		6);
-
-	Object *autumnButton = new Sphere(
-		10,
-		Eigen::Vector3d(13.3, -60, -230),
-		Eigen::Vector3d(240, 104, 4),
-		Eigen::Vector3d(240, 104, 4),
-		Eigen::Vector3d(40, 40, 40),
-		6);
-
-	Object *winterButton = new Sphere(
-		10,
-		Eigen::Vector3d(40, -60, -230),
-		Eigen::Vector3d(44, 157, 201),
-		Eigen::Vector3d(44, 157, 201),
-		Eigen::Vector3d(40, 40, 40),
-		6);
-
 	scene.addObject(sky);
 	scene.addObject(skyLeft);
 	scene.addObject(skyRight);
 	scene.addObject(skyTop);
 	scene.addObject(grass);
 
-	scene.addObject(pineLeaves1);
-
 	scene.addObject(pineLeaves2);
 	scene.addObject(pineLeaves3);
-	scene.addObject(pineLog1);
+
 	scene.addObject(pineLog2);
 	scene.addObject(pineLog3);
 
-	scene.addObject(oakLeavesBottom1);
 	scene.addObject(oakLeavesBottom2);
 	scene.addObject(oakLeavesBottom3);
-	scene.addObject(oakLeavesTop1);
+
 	scene.addObject(oakLeavesTop2);
 	scene.addObject(oakLeavesTop3);
-	scene.addObject(oakLog1);
+
 	scene.addObject(oakLog2);
 	scene.addObject(oakLog3);
 
@@ -433,10 +370,8 @@ void background()
 	scene.addObject(rogerLeftEye);
 	scene.addObject(rogerRightEye);
 	*/
-	scene.addObject(springButton);
 	scene.addObject(summerButton);
 	scene.addObject(autumnButton);
-	scene.addObject(winterButton);
 }
 
 int main(int argc, char *argv[])
@@ -520,37 +455,34 @@ int main(int argc, char *argv[])
 				{
 				case SDLK_1:
 					currentCameraIndex = 0;
+					// Atualizar câmera ativa
+					camera = cameras[currentCameraIndex];
+					camera->updateCameraMatrix();
 					break;
 				case SDLK_2:
 					currentCameraIndex = 1;
+					// Atualizar câmera ativa
+					camera = cameras[currentCameraIndex];
+					camera->updateCameraMatrix();
 					break;
 				case SDLK_3:
 					currentCameraIndex = 2;
+					// Atualizar câmera ativa
+					camera = cameras[currentCameraIndex];
+					camera->updateCameraMatrix();
+					break;
+				case SDLK_4:
+					canvas.windowDistance *= zoomFactor;
+					std::cout << "Zoom in: " << canvas.windowDistance << std::endl;
+					break;
+				case SDLK_5:
+					canvas.windowDistance /= zoomFactor;
+					std::cout << "Zoom out: " << canvas.windowDistance << std::endl;
 					break;
 				}
 
-				// Atualizar câmera ativa
-				camera = cameras[currentCameraIndex];
-				camera->updateCameraMatrix();
 				display = canvas.raycast(camera->position, scene, false);
 				display.normalize();
-
-				// Eigen::Vector3d oldPosition = camera->position; // Guarda a posição antiga
-				// camera->processInput(keystates, 5.0);
-				// camera->updateCameraMatrix();
-
-				// camera->updateCameraMatrix();
-				// Tensor display = canvas.raycast(camera->position, scene, false);
-				// std::cout << "Raycasting atualizado para posição: " << camera->position.transpose() << std::endl;
-				// display.normalize();
-
-				// Se a posição mudou, refaz o raycasting
-				// if (oldPosition != camera->position)
-				// {
-				// 	Tensor display = canvas.raycast(camera->position, scene, false);
-				// 	std::cout << "Raycasting atualizado para posição: " << camera->position.transpose() << std::endl;
-				// 	display.normalize();
-				// }
 			}
 			else if (event.type == SDL_MOUSEBUTTONDOWN)
 			{
@@ -561,8 +493,17 @@ int main(int argc, char *argv[])
 				mouseX2 = canvas.jXMin + mouseX * canvas.deltaX + canvas.deltaX / 2;
 
 				Ray pickRay(
-					origin,
+					camera->position,
 					Eigen::Vector3d(mouseX2, mouseY2, -canvas.windowDistance));
+
+				if (summerButton->hasInterceptedRay(pickRay) < 0)
+				{
+					scene.removeObject(summerButton);
+					std::cout << "Objeto sumiu" << std::endl;
+					// Atualizar a renderização
+					display = canvas.raycast(camera->position, scene, false);
+					display.normalize();
+				}
 			}
 		}
 

@@ -1,10 +1,9 @@
 #include "Scene.h"
 
-
 /**
  * @brief Construtor da classe Scene.
  */
-void Scene::addObject(Object* object)
+void Scene::addObject(Object *object)
 {
 	this->objects.push_back(object);
 }
@@ -18,7 +17,7 @@ void Scene::addObject(Object* object)
  * @param ptrDistance Ponteiro para armazenar a distância entre o ponto de origem do raio e o ponto de interseção.
  * @return O objeto atingido pelo raio.
  */
-void Scene::addSource(LightSource* source)
+void Scene::addSource(LightSource *source)
 {
 	this->sources.push_back(source);
 }
@@ -32,7 +31,7 @@ void Scene::addSource(LightSource* source)
  * @param ptrDistance Ponteiro para armazenar a distância entre o ponto de origem do raio e o ponto de interseção.
  * @return O objeto atingido pelo raio.
  */
-void Scene::addHitBox(HitBox* hitbox)
+void Scene::addHitBox(HitBox *hitbox)
 {
 	this->hitboxes.push_back(hitbox);
 }
@@ -61,7 +60,7 @@ void Scene::cleanObjects()
  * @param ptrDistance Ponteiro para armazenar a distância entre o ponto de origem do raio e o ponto de interseção.
  * @return O objeto atingido pelo raio.
  */
-void Scene::setCamera(Camera* camera)
+void Scene::setCamera(Camera *camera)
 {
 	this->camera = camera;
 }
@@ -77,18 +76,18 @@ void Scene::setCamera(Camera* camera)
  */
 void Scene::convertObjectsToCamera(bool lights)
 {
-	for (auto& o : this->objects)
+	for (auto &o : this->objects)
 	{
 		o->convertToCamera(this->camera->getTransformationMatrix());
 	}
 	if (lights)
 	{
-		for (auto& s : this->sources)
+		for (auto &s : this->sources)
 		{
 			s->convertToCamera(this->camera->getTransformationMatrix());
 		}
 	}
-	for (auto& h : this->hitboxes)
+	for (auto &h : this->hitboxes)
 	{
 		h->convertToCamera(this->camera->getTransformationMatrix());
 	}
@@ -120,4 +119,9 @@ int Scene::getNumElements()
 int Scene::getNumHitBoxes()
 {
 	return (this->hitboxes).size();
+}
+
+void Scene::removeObject(Object *obj)
+{
+	objects.erase(std::remove(objects.begin(), objects.end(), obj), objects.end());
 }
